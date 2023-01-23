@@ -14,6 +14,7 @@
 
 // BEGIN_INCLUDE
 #include "_maps\_basemap.dm"
+#include "code\__byond_version_compat.dm"
 #include "code\_compile_options.dm"
 #include "code\world.dm"
 #include "code\__DEFINES\_click.dm"
@@ -137,6 +138,8 @@
 #include "code\__DEFINES\strippable.dm"
 #include "code\__DEFINES\subsystems.dm"
 #include "code\__DEFINES\text.dm"
+#include "code\__DEFINES\tgs.config.dm"
+#include "code\__DEFINES\tgs.dm"
 #include "code\__DEFINES\tgui.dm"
 #include "code\__DEFINES\time.dm"
 #include "code\__DEFINES\tools.dm"
@@ -367,6 +370,7 @@
 #include "code\datums\saymode.dm"
 #include "code\datums\soullink.dm"
 #include "code\datums\spawners_menu.dm"
+#include "code\datums\tgs_event_handler.dm"
 #include "code\datums\verbs.dm"
 #include "code\datums\view.dm"
 #include "code\datums\weakrefs.dm"
@@ -1129,6 +1133,7 @@
 #include "code\modules\surgery\organs\vocal_cords.dm"
 #include "code\modules\tgchat\message.dm"
 #include "code\modules\tgchat\to_chat.dm"
+#include "code\modules\tgs\includes.dm"
 #include "code\modules\tgui\external.dm"
 #include "code\modules\tgui\states.dm"
 #include "code\modules\tgui\status_composers.dm"

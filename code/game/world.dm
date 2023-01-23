@@ -32,6 +32,8 @@ GLOBAL_VAR(restart_counter)
 
 	enable_debugger()
 
+	TgsNew(minimum_required_security_level = TGS_SECURITY_TRUSTED)
+
 	log_world("World loaded at [time_stamp()]!")
 
 	make_datum_references_lists()	//initialises global lists for referencing frequently used datums (so that we only ever do it once)
@@ -67,6 +69,9 @@ GLOBAL_VAR(restart_counter)
 		return
 
 	Master.Initialize(10, FALSE, TRUE)
+
+	TgsInitializationComplete()
+
 	#ifdef UNIT_TESTS
 	spawn(100)
 		HandleTestRun()
@@ -147,6 +152,7 @@ GLOBAL_VAR(restart_counter)
 		log_game("Round ID: [GLOB.round_id]")
 
 /world/Topic(T, addr, master, key)
+	TGS_TOPIC
 	var/static/list/topic_handlers = TopicHandlers()
 
 	var/list/input = params2list(T)
@@ -210,6 +216,10 @@ GLOBAL_VAR(restart_counter)
 		to_chat(world, span_boldannounce("Reboot!"))
 		Master.Shutdown()	//run SS shutdowns
 
+	
+	TgsReboot()
+	TgsEndProcess()
+
 	#ifdef UNIT_TESTS
 	FinishTestRun()
 	return
@@ -218,27 +228,7 @@ GLOBAL_VAR(restart_counter)
 	log_world("World rebooted at [time_stamp()]")
 
 	shutdown_logging() // Past this point, no logging procs can be used, at risk of data loss.
-	if(CONFIG_GET(flag/this_shit_is_stable))
-		shelleo("curl -X POST http://localhost:3636/hard-reboot-dwarf")
 	..()
-
-GLOBAL_VAR_INIT(hub_mimic, FALSE)
-GLOBAL_VAR_INIT(hub_mimic_desc, "GO! GO! GO!")
-
-/world/proc/update_status()
-
-	var/s = ""
-
-	if(!GLOB.hub_mimic)
-		s += "<big><b>Dwarf Fortress 13</b></big>\] <a href=\"https://discord.gg/rVK4VgEYmz\">DISCORD</a>\n\n"
-		s += "<img src='https://assets.station13.ru/l/d1.gif'>\n\n"
-		s += "\[<big>SLAVES TO ARMOK</big>"
-	else
-		s += "<big><b>[GLOB.hub_mimic]: RU</b></big>\] <a href=\"http://station13.ru\">SITE</a> | <a href=\"https://discord.gg/rVK4VgEYmz\">DISCORD</a>\n\n"
-		s += "<img src='https://assets.station13.ru/l/w[rand(4, 8)].gif'>\n\n"
-		s += "\[<big>[GLOB.hub_mimic_desc]</big>"
-
-	status = s
 
 /world/proc/update_hub_visibility(new_visibility)
 	if(new_visibility == GLOB.hub_visibility)
